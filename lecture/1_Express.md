@@ -108,3 +108,151 @@ next()를 호출해야 다음 미들웨어로 넘어갑니다.
     });
 ```
 
+3) 미들웨이 종류
+1️⃣ app.use(express.json())
+```
+- 역할 : JSON 형식으로 데이터를 보냈을 때
+- 사용 : REST API(fetch, axios 등으로 보내는 JSON 데이터)
+- Content-Type : application/json
+```
+· 클라이언트 JSON
+```
+// 클라이언트가 이렇게 보내면:
+fetch('/api', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name: '홍길동' })
+});
+```
+
+· 서버
+```
+// 서버에서 req.body로 접근 가능:
+app.use(express.json())
+
+app.post('/api', (req, res) => {
+  console.log(req.body.name); // '홍길동'
+});
+```
+
+2️⃣ app.use(express.urlencoded({ extended: false }))
+
+```
+- 역할 : HTML Form 형식으로 데이터를 보냈을 때
+- 사용 : <form method="POST"> 전송 시
+- Content-Type : application/x-www-form-urlencoded
+```
+· 클라이언트 Form
+```
+<!-- HTML Form -->
+<form action="/login" method="POST">
+  <input name="username" />
+  <input name="password" type="password" />
+  <button>로그인</button>
+</form>
+```
+· 서버
+```
+app.use(express.urlencoded({ extended: false }))
+
+app.post('/login', (req, res) => {
+  console.log(req.body.username); // form 입력값
+});
+```
+
+3️⃣ app.use(express.static('public'))
+
+```
+- 역할 : 정적 파일을 자동으로 제공
+- 사용 : HTML, CSS, 이미지, JS 파일 
+- 폴더 : 프로젝트 루트의 public/ 폴더
+
+
+프로젝트/
+├── public/
+│   ├── index.html   → http://localhost:3000/index.html
+│   ├── style.css    → http://localhost:3000/style.css
+│   └── logo.png     → http://localhost:3000/logo.png
+└── app.js
+```
+
+4️⃣ CORS (Cross-Origin Resource Sharing) 미들웨어
+
+(1) CORS란?
+"다른 출처(Origin)의 리소스를 요청할 때 브라우저가 적용하는 보안 정책"
+
+CORS는 브라우저에만 존재하는 정책입니다. → Postman, curl, 서버 간 통신에서는 CORS 에러가 발생하지 않습니다.
+
+(2) Origin(출처)이란?
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+(3) 왜 CORS 정책이 존재할까?
+```
+브라우저가 "허가된 출처만 리소스에 접근 가능" 하도록 막아주는 것이 CORS의 목적입니다.
+
+[정상적인 요청]
+사용자 → 내 사이트(mybank.com) → 서버 ✅
+
+[CORS가 없다면?]
+사용자 → 악성 사이트(hack.com) → mybank.com 서버 요청 가능! ❌
+                                  (쿠키/세션 탈취 위험)
+```
+
+```
+(4) CORS 에러 발생 상황
+[클라이언트]  localhost:5500 (HTML/JS)
+      ↓  fetch('/api/data') 요청
+[서버]        localhost:3000 (Express)
+
+→ 포트가 다름 → 브라우저가 CORS 차단! 🚫
+에러 메시지 Access to fetch at 'http://localhost:3000/api' from origin 'http://localhost:5500' has been blocked by CORS policy
+```
+(5) CORS 해결 방법
+방법 1. cors 패키지 사용 (가장 간단) ⭐
+```
+npm i cors
+```
+
+```
+import express from "express";
+***import cors from "cors";***
+
+const PORT = 8000;
+const server = express();
+
+// 모든 출처 허용
+***server.use(cors());*
+
+// 특정 출처만 허용 (권장)**
+***server.use(cors({
+  origin: 'http://localhost:5500',  // 허용할 클라이언트 주소
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true  // 쿠키 허용 시
+}));***
+
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
+server.use(express.static("public"));
+
+server.get("/", function (req, res, next) {
+  res.send("express success!!!!");
+});
+
+server.listen(PORT, () => {
+  console.log(`server running --->> ${PORT}`);
+});
+```
+
+```
+방법 2. 직접 헤더 설정
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+```
