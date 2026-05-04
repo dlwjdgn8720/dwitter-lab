@@ -1,4 +1,4 @@
-## Express 소개
+## 1. Express 소개
 
 
 #### (1) state of JS 2025
@@ -9,8 +9,31 @@
 
 #### (2) Express를 사용하는 이유
 ```
-    1) 검증된 생태계 - 사용자가 많다
-    2) 빠른 서버 생성
-    3) 기볍고 유연한 미들웨어 구조
+1) 검증된 생태계 - 사용자가 많다
+2) 빠른 서버 생성
+3) 기볍고 유연한 미들웨어 구조
+```
 
+#### (3) Express.js 기본 라우팅과 CRUD API
+
+
+##### 1) 라우팅이란?
+```
+클라이언트가 특정 URI(엔드포인트)로 요청을 보내면, 서버가 그 요청을 받아서
+처리하는 방식을 정의하는 것이다.
+
+예) http://localhost:8080/list --> /list 요청에 따른 라우팅 진행
+```
+
+##### 2) 라우팅 정의
+```
+1️⃣ express 모듈 import 및 생성
+    예) const express = require('express');
+        const app = express();
+
+2️⃣ app 객체의 메서드로 HTTP 요청을 라우팅함
+    예) app.get()     # R(Read)
+        app.post()    # C(Create)
+        app.put()     # U(Update)
+        app.delete()  # D(Delete)
 ```
