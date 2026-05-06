@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { getFetchData } from '../util/fetchDatas.js';
 
 export default function CompGet() {
     const [list, setList] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
-            const url = 'http://localhost:9000/api/get';
-            const response = await fetch(url, {
-                method: 'GET'
-            });
-            const jsonData = await response.json(); // list:[]
+            const jsonData = await getFetchData(`/api/get`);
             setList(jsonData.list);
         }
         fetchData();
@@ -17,9 +15,9 @@ export default function CompGet() {
     console.log('list===>', list);
 
     return (
-        <div>
-            <h1>Fruists List</h1>
-            <table border="1">
+        <div style={{width: "1000px", margin:"auto"}}>
+            <h1>GET :: Fruists List</h1>
+            <table border="1" style={{width: "60%"}}>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -28,8 +26,9 @@ export default function CompGet() {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* 서버에게 받은 데이터 출력 */}
                     {list?.map((fruit, idx) =>
-                        <tr key={idx}>
+                        <tr key={idx} style={{textAlign: "center"}}>
                             <td>{fruit.name}</td>
                             <td>{fruit.color}</td>
                             <td>{fruit.emoji}</td>

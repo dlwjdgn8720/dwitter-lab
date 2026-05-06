@@ -1,50 +1,67 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { postFetchData } from '../util/fetchDatas';
 
 export default function CompPost() {
     const nameRef = useRef(null);
-    const [data, setData] = useState('');   //서버 전송 데이터
-    const [name, setName] = useState('');   //폼 입력 데이터
+    const addressRef = useRef(null);
+    const initForm = { name: '', address: '' };
+    const [form, setForm] = useState({ name: '', address: '' });   //폼 입력 데이터
 
-    const handleChange = () => {
-        setName(nameRef.current.value);
+    const handleFormChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
     }
 
-    const handlePost = async() => {
-        const url = 'http://localhost:9000/api/post';
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify({"name": name})
-        });
-        const jsonData = await response.json(); // list:[]
-        setData(jsonData.result);
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        if (nameRef.current.value === '') {
+            alert('이름을 입력해주세요');
+            nameRef.current.focus();
+        } else if (addressRef.current.value === '') {
+            alert('주소를 입력해주세요');
+            addressRef.current.focus();
+        } else {
+            console.log('서버전송 -->', form);
+            const response = await postFetchData(`/api/post`, form);
+            console.log(await response.status);
+            response.result? alert('등록 성공⭕!!') : alert('등록 실패❌!!');
+        }
     }
 
-    /*
-    useEffect(() => {
-            const fetchData = async () => {
-                const url = 'http://localhost:9000/api/post';
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers : {'Content-type': 'application/json'},
-                    body: JSON.stringify({"name" : "Smith❤"})
-                });
-                const jsonData = await response.json(); // list:[]
-                setData(jsonData.result);
-            }
-            fetchData();
-        }, []);
-    */
 
     return (
-        <div>
-            <input type="text"
-                name="name"
-                value={name}
-                ref={nameRef}
-                onChange={handleChange}></input>
-            <button onClick={handlePost}>전송</button>
-            <h2>Post 방식으로 전송된 결과 : {data}</h2>
+        <div style={{ width: "1000px", margin: "auto" }}>
+            <h1>Post :: 주소 등록 폼</h1>
+            <form onSubmit={handleFormSubmit}>
+                <ul>
+                    <li>
+                        <label htmlFor="name">이름</label>
+                        <input type="text"
+                            id="name"
+                            name="name"
+                            ref={nameRef}
+                            value={form.name}
+                            onChange={handleFormChange} />
+
+                    </li>
+                    <li>
+                        <label htmlFor="address">주소</label>
+                        <input type="text"
+                            id="address"
+                            name="address"
+                            ref={addressRef}
+                            value={form.address}
+                            onChange={handleFormChange} />
+                    </li>
+                    <li>
+                        <button type="submit">등록하기</button>
+                        <button type='button'
+                            onClick={() => { setForm(initForm) }}>다시쓰기</button>
+                    </li>
+                </ul>
+            </form>
+
         </div>
     );
 }
