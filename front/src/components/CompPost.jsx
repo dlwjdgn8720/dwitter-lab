@@ -24,7 +24,6 @@ export default function CompPost() {
         } else {
             console.log('서버전송 -->', form);
             const response = await postFetchData(`/api/post`, form);
-            console.log(await response.status);
             response.result? alert('등록 성공⭕!!') : alert('등록 실패❌!!');
         }
     }

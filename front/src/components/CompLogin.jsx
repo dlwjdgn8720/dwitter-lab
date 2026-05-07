@@ -38,6 +38,7 @@ export default function CompLogin() {
             <h1>Post :: 로그인 폼</h1>
             <form onSubmit={handleLogin} style={style.form}>
                 <input
+                    type='text'
                     name="id"
                     placeholder="아이디를 입력하세요"
                     value={form.id}
