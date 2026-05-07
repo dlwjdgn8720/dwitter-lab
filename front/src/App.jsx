@@ -9,11 +9,11 @@ export default function App() {
     <div>
         <CompLogin/>
         <hr/>
+        <CompPost/>
+        <hr/>
         <CompGet />
         <hr/>
         <CompGetParam/>
-        <hr/>
-        <CompPost/>
     </div>
   );
 }

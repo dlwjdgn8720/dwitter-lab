@@ -84,6 +84,18 @@ app.post("/api/post", (req, res, next) => {
     res.json({ "result": true });
 });
 
+app.post("/users/login", (req, res, next) => {
+    const {id, pwd} = req.body.data;
+    const users = [
+        {"id": "test", "pwd": "1234"},
+        {"id": "hong", "pwd": "1111"},
+        {"id": "test1234", "pwd": "test1234"}
+    ];
+    console.log(id, pwd);
+    const userIdx = users.findIndex(user => user.id === id && user.pwd === pwd);
+    userIdx !== -1 ? res.json({ "result": true }) : res.json({ "result": false })
+});
+
 //5. 서버 실행
 app.listen(PORT, () => {
     console.log(`서버 실행 ----> ${PORT}`);
