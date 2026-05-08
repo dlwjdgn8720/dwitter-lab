@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import AvatarImage from "../components/commons/AvatarImage.jsx";
 import Menu from "../components/commons/Menu.jsx";
-import { useOutletContext } from "react-router-dom";
+// import { useOutletContext } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { getFetchData } from "../util/fetch.js";
 

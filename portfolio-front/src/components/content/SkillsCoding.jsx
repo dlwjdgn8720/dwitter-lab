@@ -9,7 +9,9 @@ export default function SkillsCoding({ list }) {
             {list?.map((skill, idx) => 
                 <li className="bar" key={idx}>
                     <div className="bar-title">
-                        <span style = {{cursor: "pointer"}} onClick={()=>{dispatch(add(skill.title))}}>{skill.title}</span>
+                        <span style = {{cursor: "pointer"}} 
+                              onClick={()=>{dispatch(add(skill.title))}}>
+                        {skill.title}</span>
                         <span>{skill.value}</span>
                     </div>
                     <div className="bar-bg">

@@ -1,31 +1,31 @@
 import * as repository from '../repository/content.js';
 
-export const getHome = (req, res, next) => {
-    const home = repository.getHome();
+export const getHome = async(req, res, next) => {
+    const home = await repository.getHome();
     res.json({ "result": home });
 }
 
-export const getAbout = (req, res, next) => {
-    const about = repository.getAbout();
+export const getAbout = async(req, res, next) => {
+    const about = await repository.getAbout();
     res.json({ "result": about });
 }
 
-export const getSkills = (req, res, next) => {
-    const skills = repository.getSkills();
+export const getSkills = async(req, res, next) => {
+    const skills = await repository.getSkills();
     res.json({ "result": skills });
 }
 
-export const getWork = (req, res, next) => {
-    const work = repository.getWork();
+export const getWork = async(req, res, next) => {
+    const work = await repository.getWork();
     res.json({ "result": work });
 }
 
-export const getTestimonials = (req, res, next) => {
-    const testimonials = repository.getTestimonials();
+export const getTestimonials = async(req, res, next) => {
+    const testimonials = await repository.getTestimonials();
     res.json({ "result": testimonials });
 }
 
-export const getProject = (req, res, next) => {
-    const project = repository.getProject(req.params.pid);
+export const getProject = async(req, res, next) => {
+    const project = await repository.getProject(req.params.pid);
     res.json({ "result": project });
 }
