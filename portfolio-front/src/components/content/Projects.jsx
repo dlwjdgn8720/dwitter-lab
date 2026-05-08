@@ -22,6 +22,7 @@ export default function Projects({ projects }) {
                 {projects?.map((project, idx) => 
                     <li className="project" 
                         key={idx}
+                        style = {{cursor: "pointer"}}
                         onClick={()=> handleProjectDetail(project.pid)}>
                         <AvatarImage    img={project.img}
                                         alt={project.alt}
