@@ -32,24 +32,24 @@ export const getTestimonials = async () => {
 
 export const getProject = async (pid) => {
     // 1. 한번에 조회
-    // const sql = `
-    //             select p.* 
-    //             from portfolio, 
-    //             json_table(work, '$.projects[*]'
-    //             columns(
-    //                 pid varchar(10) path '$.pid',
-    //                 img varchar(50) path '$.img',
-    //                 alt varchar(100) path '$.alt',
-    //                 title varchar(50) path '$.title',
-    //                 description varchar(100) path '$.description'
-    //             ) 
-    //         ) as p
-    //             where p.pid = ?
-    //              `
+    const sql = `
+                select p.* 
+                from portfolio, 
+                json_table(work, '$.projects[*]'
+                columns(
+                    pid varchar(10) path '$.pid',
+                    img varchar(50) path '$.img',
+                    alt varchar(100) path '$.alt',
+                    title varchar(50) path '$.title',
+                    description varchar(100) path '$.description'
+                ) 
+            ) as p
+                where p.pid = ?
+                 `
 
     // 2. work 전체 조회 && find
-    const sql = `select work from portfolio`;
-    const [results] = await db.execute(sql, []);
-    const project = await results[0].work.projects.find((project) => project.pid === pid);
-    return project
+    // const sql = `select work from portfolio`;
+    const [results] = await db.execute(sql, [pid]);
+    // const project = await results[0].work.projects.find((project) => project.pid === pid);
+    return results[0];
 }
