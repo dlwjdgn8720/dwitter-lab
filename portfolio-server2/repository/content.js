@@ -45,7 +45,7 @@ export const getProject = async (pid) => {
     //             ) 
     //         ) as p
     //             where p.pid = ?
-    //             `
+    //              `
 
     // 2. work 전체 조회 && find
     const sql = `select work from portfolio`;
