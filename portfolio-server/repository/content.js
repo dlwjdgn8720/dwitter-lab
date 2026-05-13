@@ -32,28 +32,27 @@ export const getTestimonials = async() => {
 
 
 export const getProject = async(pid) => {
-    const sql = `select work from portfolio`;
-    const [result] = await db.execute(sql, []);
-    const project = result[0].work.projects.find((project) => project.pid === pid);
-    return project;
-    
-    // const sql = `
-    //         SELECT * 
-    //         FROM portfolio 
-    //         WHERE ? MEMBER OF (work->'$.projects[*].pid')
-    //     `;
 
-    // const [result] = await db.execute(sql, [ pid ]);
+    const sql = `
+      SELECT p.*
+      FROM portfolio,
+      JSON_TABLE(work, '$.projects[*]' 
+        COLUMNS (
+          pid VARCHAR(10) PATH '$.pid',
+          title VARCHAR(100) PATH '$.title',
+          alt VARCHAR(100) PATH '$.alt',
+          img VARCHAR(255) PATH '$.img',
+          description TEXT PATH '$.description'
+        )
+      ) AS p
+      WHERE p.pid = ?;
+    `;
 
-    // // 2. 결과가 없는 경우(빈 배열)에 대한 처리
-    // if (!result[0] || result[0].length === 0) {
-    //     console.log(`No project found with pid: ${pid}`);
-    //     return null; // 또는 []
-    // }
-
-    // // 3. 데이터가 있을 때만 로그 출력 및 반환
-    // // 주의: DB 설정에 따라 work가 이미 객체일 수도, 문자열일 수도 있습니다.
-    // console.log('Project Data:', result[0]);
+    // const sql = `select work from portfolio`;
+    // const project = result[0].work.projects.find((project) => project.pid === pid);
+    const [result] = await db.execute(sql, [pid]);
+    console.log('result[0]:: ', result[0]);
+    return await result[0];
 }
 
 
