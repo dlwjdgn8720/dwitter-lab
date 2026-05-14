@@ -41,7 +41,7 @@ export default function Login() {
 
   const handleChange = (key) => (e) => {
     const value = e.target.value;
-    console.log(key, value);
+    // console.log(key, value);
 
     setForm((f) => {
       const next = { ...f, [key]: value };
@@ -85,7 +85,9 @@ export default function Login() {
     try {
       // ✅ 2단계: 실제 서버 로그인 API 호출
       const data = await authAPI.login(form);
-      login(data.user, data.token);
+      console.log(data.user, data.token);
+      
+      login(data.user, data.token); //localStorage에 token, user정보 저장
       navigate("/");
     } catch (e) {
       // 서버에서 반환한 에러 메시지 표시 (예: "아이디 또는 비밀번호가 틀렸습니다.")

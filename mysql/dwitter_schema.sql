@@ -41,6 +41,56 @@ INSERT INTO tweets (user_id, `content`) VALUES
   (1, '뮤지컬 공연을 봤는데, 너무 감명깊었어'),
   (3, '백엔드에서 가장 중요한게 무엇일까?');
 
+select * from users;
+select * from tweets;
+
+-- 로그인
+-- SELECT * FROM users WHERE username = 'user1';
+select  count(username) as count,
+		(select id from users where username = 'user1') as id,
+		(select username from users where username = 'user1') as username,
+		(select password from users where username = 'user1') as password,
+		(select avatar_url from users where username = 'user1') as avatar_url	
+	from users
+    where username = 'user1';
+    
+select * from users;
+select * from tweets where user_id = 3;
+
+-- my tweets
+SELECT
+    t.id,
+    t.content,
+    t.created_at,
+    u.id AS user_id,
+    u.username,
+    u.avatar_url
+  FROM tweets t
+  JOIN users u ON t.user_id = u.id
+  WHERE t.user_id = '2' ORDER BY t.created_at DESC;
+  
+select * from information_schema.views
+	where table_schema = 'dwitter';
+
+-- 전체 조회(view)
+create view tweets_view
+as 
+SELECT
+	t.id,
+	t.content,
+	t.created_at,
+	u.id AS user_id,
+	u.username,
+	u.avatar_url
+FROM tweets t
+JOIN users u ON t.user_id = u.id;
+
+select * from tweets_view;
+
+
+
+
+
 
 
 

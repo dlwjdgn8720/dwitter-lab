@@ -10,12 +10,11 @@ dayjs.locale('ko');
 
 // 유저명 첫 글자 + 색상으로 아바타 생성
 const COLORS = ['#1da1f2','#e0245e','#17bf63','#ffad1f','#794bc4','#f45d22'];
-function Avatar({ username, profileImage }) {
-
-  const color   = COLORS[username.charCodeAt(0) % COLORS.length];
+function Avatar({ username, profileImage, id }) {
+  const color   = COLORS[username?.charCodeAt(0) % COLORS.length];
   const initial = username[0]?.toUpperCase() ?? '?';
   return (
-    <div className={styles.avatar} style={{ background: color }}>
+    <div key = {id} className={styles.avatar} style={{ background: color }}>
       { profileImage ? 
         <img  className={styles.avatar}
               src={`http://localhost:3001/uploads/${profileImage}`} 
@@ -59,7 +58,8 @@ export default function TweetCard({ tweet, onDelete, onUpdate }) {
   return (
     <div className={styles.card}>
       <Avatar username={tweet.username}
-              profileImage={tweet.avatar_url}/>
+              profileImage={tweet.avatar_url}
+              id = {tweet.id}/>
 
       <div className={styles.body}>
         {/* 헤더 */}

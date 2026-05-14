@@ -7,7 +7,7 @@ import TweetCard from "../components/TweetCard";
 import styles from "./Feed.module.css";
 
 export default function MyTweets() {
-  const { user, ready } = useAuth();
+  const { user, ready } = useAuth(); //로그인 인증 여부 확인
   const navigate = useNavigate();
   const [tweets, setTweets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,6 +20,7 @@ export default function MyTweets() {
       return;
     }
 
+    //tweetAPI는 비동기식, promise 리턴!!
     tweetAPI
       .getMy()
       .then(setTweets)
@@ -28,8 +29,8 @@ export default function MyTweets() {
   }, [ready, user]);
 
   const handlePost = async (content) => {
-    const tweet = await tweetAPI.create(content);
-    setTweets((prev) => [tweet, ...prev]);
+    const { sResult } = await tweetAPI.create(content);
+    setTweets((prev) => [sResult, ...prev]);
   };
 
   const handleDelete = async (id) => {

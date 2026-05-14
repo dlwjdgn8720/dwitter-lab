@@ -10,6 +10,7 @@ export default function authMiddleware(req, res, next) {
     return res.status(401).json({ message: '인증 토큰이 없습니다.' });
   }
 
+  //토큰 재생성시!
   try {
     req.user = jwt.verify(token, SECRET);
     next();
