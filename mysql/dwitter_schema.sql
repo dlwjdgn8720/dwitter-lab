@@ -87,6 +87,9 @@ JOIN users u ON t.user_id = u.id;
 
 select * from tweets_view;
 
+select * from tweets_view
+            where id = '10';
+
 
 
 
